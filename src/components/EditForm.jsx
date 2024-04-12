@@ -1,49 +1,28 @@
 import react from "react";
-import { useState } from "react";
 import { useTaskContext } from "../context/Context";
+import { useState } from "react";
 
-const TaskForm = ({ setShowPopup }) => {
+const EditForm = ({taskData,setShowEditPopup }) => {
   const { dispatch } = useTaskContext();
-  const generateUniqueId = () => {
-    return Date.now().toString(36) + Math.random().toString(36).substr(2, 5);
-  };
-  const [taskData, setTaskData] = useState({
-    id:generateUniqueId(),
-    title: "",
-    description: "",
-    tags: "",
-    priority: "",
-  });
+  const [editedTaskData, setEditedTaskData] = useState(taskData);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setTaskData({ ...taskData, [name]: value });
-  };
- 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log("Submitted task data:", taskData);
-    const tagsArray = taskData.tags.split(",").map(tag => tag.trim());
-    const newTaskData = { ...taskData, tags: tagsArray };
-    // Dispatch an action to add the new task
-    dispatch({ type: "ADD_TASK", payload: newTaskData });
-    setTaskData({
-      id: "",
-      title: "",
-      description: "",
-      tags: "",
-      priority: "",
-    });
-    setShowPopup(false);
+    setEditedTaskData({ ...editedTaskData, [name]: value });
   };
 
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    dispatch({ type: "EDIT_TASK", payload: editedTaskData });
+    setShowEditPopup(false);
+  };
   return (
     <form
       className="mx-auto my-10 mt-36 w-full max-w-[740px] rounded-xl border border-[#FEFBFB]/[36%] bg-[#191D26] p-9 max-md:px-4 lg:my-20 lg:p-11"
       onSubmit={handleSubmit}
     >
       <h2 className="mb-9 text-center text-2xl font-bold text-white lg:mb-11 lg:text-[28px]">
-        Add New Task
+        Edit Task
       </h2>
       <div className="space-y-9 text-white lg:space-y-10">
         <div className="space-y-2 lg:space-y-3">
@@ -53,7 +32,7 @@ const TaskForm = ({ setShowPopup }) => {
             type="text"
             name="title"
             id="title"
-            value={taskData.title}
+            value={editedTaskData.title}
             onChange={handleChange}
             required
           />
@@ -65,7 +44,7 @@ const TaskForm = ({ setShowPopup }) => {
             type="text"
             name="description"
             id="description"
-            value={taskData.description}
+            value={editedTaskData.description}
             onChange={handleChange}
             required
           ></textarea>
@@ -78,7 +57,7 @@ const TaskForm = ({ setShowPopup }) => {
               type="text"
               name="tags"
               id="tags"
-              value={taskData.tags}
+              value={editedTaskData.tags}
               onChange={handleChange}
               required
             />
@@ -89,7 +68,7 @@ const TaskForm = ({ setShowPopup }) => {
               className="block w-full cursor-pointer rounded-md bg-[#2D323F] px-3 py-2.5"
               name="priority"
               id="priority"
-              value={taskData.priority}
+              value={editedTaskData.priority}
               onChange={handleChange}
               required
             >
@@ -106,11 +85,11 @@ const TaskForm = ({ setShowPopup }) => {
           type="submit"
           className="rounded bg-blue-600 px-4 py-2 text-white transition-all hover:opacity-80"
         >
-          Create new Task
+         Update Task
         </button>
       </div>
     </form>
   );
 };
 
-export default TaskForm;
+export default EditForm;

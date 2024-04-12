@@ -7,6 +7,7 @@ const DeleteConfirmationPopUp = ({
 }) => {
   const { dispatch } = useTaskContext();
   const handleConfirmDelete = () => {
+    console.log(deleteTaskId);
     dispatch({ type: "DELETE_TASK", payload: deleteTaskId });
     setDeleteTaskId(null);
     setDeleteCOnfirmationPopup(false);

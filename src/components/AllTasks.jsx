@@ -3,6 +3,7 @@ import TaskForm from "./TaskForm";
 import { useTaskContext } from "../context/Context";
 import DeleteConfirmationPopUp from "./DeleteConfirmationPopUp";
 import DeleteAllTaskConfirmationPopup from "./DeleteAllTaskConfirmationPopup";
+import EditForm from "./EditForm";
 
 const AllTasks = () => {
   const [showPopup, setShowPopup] = useState(false);
@@ -26,6 +27,7 @@ const AllTasks = () => {
   const [deleteCOnfirmationPopup, setDeleteCOnfirmationPopup] = useState(false);
   const [deleteTaskId, setDeleteTaskId] = useState(null);
   const handleDeleteTask = (taskId) => {
+    console.log(taskId);
     setDeleteTaskId(taskId);
     setDeleteCOnfirmationPopup(true);
   };
@@ -33,6 +35,14 @@ const AllTasks = () => {
   // handle favorite
   const handleStarClick = (taskId) => {
     dispatch({ type: "HANDLE_FAVORITE", payload: taskId });
+  };
+
+  //edit section
+  const [showEditPopup, setShowEditPopup] = useState(false);
+  const [editedTask, setEditedTask] = useState(null);
+  const handleEditTask = (taskId) => {
+    setEditedTask(taskId);
+    setShowEditPopup(true);
   };
   return (
     <section className="mb-20" id="tasks">
@@ -55,7 +65,7 @@ const AllTasks = () => {
                     />
                     <button
                       type="submit"
-                      className="absolute right-2 top-0 h-full rounded-e-lg text-white md:right-4"
+                      className="absolute right-0 top-0 h-full rounded-e-lg text-black "
                     >
                       <svg
                         className="h-4 w-4"
@@ -66,9 +76,9 @@ const AllTasks = () => {
                       >
                         <path
                           stroke="currentColor"
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                          stroke-width="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth="2"
                           d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
                         />
                       </svg>
@@ -123,7 +133,7 @@ const AllTasks = () => {
                 <tbody>
                   {getSearchedTasks?.map((task, index) => (
                     <tr
-                      key={index}
+                      key={task.id}
                       className="border-b border-[#2E3443] [&>td]:align-baseline [&>td]:px-4 [&>td]:py-2"
                     >
                       <td>
@@ -152,7 +162,7 @@ const AllTasks = () => {
                         {Array.isArray(task.tags) ? (
                           <div>
                             {task.tags.map((tag, index) => (
-                              <span key={index} className={`tagIndex-${index}`}>
+                              <span key={`${task.id}-${index}`} className={`tagIndex-${index}`}>
                                 {tag}
                               </span>
                             ))}
@@ -170,7 +180,7 @@ const AllTasks = () => {
                           >
                             Delete
                           </button>
-                          <button className="text-blue-500 w-16 text-xs">
+                          <button className="text-blue-500 w-16 text-xs" onClick={() => handleEditTask(task)}>
                             Edit
                           </button>
                         </div>
@@ -185,9 +195,9 @@ const AllTasks = () => {
       </div>
 
       {showPopup && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 mt-24">
           <div className="max-h-[100vh] overflow-auto scrollbar-hidden">
-            <TaskForm setShowPopup={setShowPopup} />
+            <TaskForm setShowPopup={setShowPopup}/>
           </div>
         </div>
       )}
@@ -205,6 +215,17 @@ const AllTasks = () => {
           deleteTaskId={deleteTaskId}
           setDeleteCOnfirmationPopup={setDeleteCOnfirmationPopup}
         />
+      )}
+      {/* edit section */}
+      {showEditPopup && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 mt-24">
+          <div className="max-h-[100vh] overflow-auto scrollbar-hidden">
+             <EditForm
+             taskData={editedTask}
+             setShowEditPopup={setShowEditPopup}
+           />
+          </div>
+        </div>
       )}
     </section>
   );

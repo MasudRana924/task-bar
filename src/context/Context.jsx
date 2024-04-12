@@ -1,5 +1,4 @@
-
-import  { createContext, useContext, useReducer } from 'react';
+import { createContext, useContext, useReducer } from "react";
 const TaskContext = createContext();
 
 // Define the initial state of our tasks (empty array)
@@ -10,16 +9,26 @@ const initialState = {
 // Define how tasks can be updated based on actions
 const taskReducer = (state, action) => {
   switch (action.type) {
-    case 'ADD_TASK':
+    case "ADD_TASK":
       return { tasks: [...state.tasks, action.payload] };
-    case 'DELETE_TASK':
-      return { tasks: state.tasks.filter(task => task.id !== action.payload) };
-    case 'DELETE_ALL':
-      return { tasks: [] };
-    case 'HANDLE_FAVORITE':
+    case "DELETE_TASK":
       return {
-        tasks: state.tasks.map(task =>
-          task.id === action.payload ? { ...task, favorite: !task.favorite } : task
+        tasks: state.tasks.filter((task) => task.id !== action.payload),
+      };
+    case "DELETE_ALL":
+      return { tasks: [] };
+    case "HANDLE_FAVORITE":
+      return {
+        tasks: state.tasks.map((task) =>
+          task.id === action.payload
+            ? { ...task, favorite: !task.favorite }
+            : task
+        ),
+      };
+    case "EDIT_TASK":
+      return {
+        tasks: state.tasks.map((task) =>
+          task.id === action.payload.id ? action.payload : task
         ),
       };
     default:
@@ -30,14 +39,18 @@ const taskReducer = (state, action) => {
 // Create a component to wrap our app and provide access to the tasks and actions
 const TaskProvider = ({ children }) => {
   const [state, dispatch] = useReducer(taskReducer, initialState);
-  return <TaskContext.Provider value={{ state, dispatch }}>{children}</TaskContext.Provider>;
+  return (
+    <TaskContext.Provider value={{ state, dispatch }}>
+      {children}
+    </TaskContext.Provider>
+  );
 };
 
 // Create a custom hook to easily access the tasks and actions from any component
 const useTaskContext = () => {
   const context = useContext(TaskContext);
   if (!context) {
-    throw new Error('useTaskContext must be used within a TaskProvider');
+    throw new Error("useTaskContext must be used within a TaskProvider");
   }
   return context;
 };
