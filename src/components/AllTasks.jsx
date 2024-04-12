@@ -4,7 +4,6 @@ import { useTaskContext } from "../context/Context";
 import DeleteConfirmationPopUp from "./DeleteConfirmationPopUp";
 import DeleteAllTaskConfirmationPopup from "./DeleteAllTaskConfirmationPopup";
 import EditForm from "./EditForm";
-
 const AllTasks = () => {
   const [showPopup, setShowPopup] = useState(false);
   const handleAddTaskClick = () => {
@@ -35,6 +34,7 @@ const AllTasks = () => {
   // handle favorite
   const handleStarClick = (taskId) => {
     dispatch({ type: "HANDLE_FAVORITE", payload: taskId });
+    alert("add to favorite")
   };
 
   //edit section
@@ -162,7 +162,10 @@ const AllTasks = () => {
                         {Array.isArray(task.tags) ? (
                           <div>
                             {task.tags.map((tag, index) => (
-                              <span key={`${task.id}-${index}`} className={`tagIndex-${index}`}>
+                              <span
+                                key={`${task.id}-${index}`}
+                                className={`tagIndex-${index}`}
+                              >
                                 {tag}
                               </span>
                             ))}
@@ -180,7 +183,10 @@ const AllTasks = () => {
                           >
                             Delete
                           </button>
-                          <button className="text-blue-500 w-16 text-xs" onClick={() => handleEditTask(task)}>
+                          <button
+                            className="text-blue-500 w-16 text-xs"
+                            onClick={() => handleEditTask(task)}
+                          >
                             Edit
                           </button>
                         </div>
@@ -197,7 +203,7 @@ const AllTasks = () => {
       {showPopup && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 mt-24">
           <div className="max-h-[100vh] overflow-auto scrollbar-hidden">
-            <TaskForm setShowPopup={setShowPopup}/>
+            <TaskForm setShowPopup={setShowPopup} />
           </div>
         </div>
       )}
@@ -220,10 +226,10 @@ const AllTasks = () => {
       {showEditPopup && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 mt-24">
           <div className="max-h-[100vh] overflow-auto scrollbar-hidden">
-             <EditForm
-             taskData={editedTask}
-             setShowEditPopup={setShowEditPopup}
-           />
+            <EditForm
+              taskData={editedTask}
+              setShowEditPopup={setShowEditPopup}
+            />
           </div>
         </div>
       )}
