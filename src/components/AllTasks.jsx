@@ -34,7 +34,7 @@ const AllTasks = () => {
   // handle favorite
   const handleStarClick = (taskId) => {
     dispatch({ type: "HANDLE_FAVORITE", payload: taskId });
-    alert("add to favorite")
+    alert("add to favorite");
   };
 
   //edit section
@@ -131,7 +131,7 @@ const AllTasks = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {getSearchedTasks?.map((task, index) => (
+                  {getSearchedTasks?.map((task) => (
                     <tr
                       key={task.id}
                       className="border-b border-[#2E3443] [&>td]:align-baseline [&>td]:px-4 [&>td]:py-2"
