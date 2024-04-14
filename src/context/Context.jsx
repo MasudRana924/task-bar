@@ -6,7 +6,7 @@ const initialState = {
   tasks: [],
 };
 
-// Define how tasks can be updated based on actions
+// Define how tasks can be updated based on actions to update task state 
 const taskReducer = (state, action) => {
   switch (action.type) {
     case "ADD_TASK":

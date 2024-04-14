@@ -6,7 +6,6 @@ import AllTasks from './components/AllTasks';
 
 const App = () => {
   return (
-    // Wrap our entire app with the TaskProvider to provide access to tasks
     <TaskProvider>
       <div className="App">
         <Navbar/>
@@ -17,5 +16,4 @@ const App = () => {
   );
 };
 
-// Export the App component for use in other files
 export default App;
